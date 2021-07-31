@@ -1,0 +1,18 @@
+{
+  "name": "yeah-rowing",
+  "version": "1.0.0",
+  "description": "serverless functions plus notion api",
+  "author": "flashback2k14",
+  "license": "MIT",
+  "scripts": {
+    "start:d": "vercel dev",
+    "start:d:b": "NODE_OPTIONS='--inspect' vercel dev"
+  },
+  "dependencies": {
+    "@notionhq/client": "0.2.3",
+    "dotenv": "10.0.0"
+  },
+  "devDependencies": {
+    "vercel": "^23.0.1"
+  }
+}
