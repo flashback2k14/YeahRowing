@@ -1,7 +1,6 @@
-const dotEnv = require('dotenv');
 const { Client } = require('@notionhq/client');
 
-dotEnv.config();
+require('dotenv').config();
 const notion = new Client({ auth: process.env.NOTION_API_TOKEN });
 
 const checkAuth = (headers) => {
