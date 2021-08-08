@@ -1,12 +1,16 @@
 const { notion, checkAuth } = require('../../utils');
 
 module.exports = async (req, res) => {
+  if (req.method !== 'GET') {
+    res.status(405).send('Not supported method');
+  }
+
   if (!checkAuth(req.headers)) {
     res.status(401).send('NO AUTH');
   }
 
   const { results: pages } = await notion.databases.query({
-    database_id: process.env.NOTION_DB_ID,
+    database_id: process.env.NODE_ENV === 'production' ? process.env.NOTION_DB_ID : process.env.NOTION_DB_ID_TEST,
     sorts: [
       {
         property: 'ID',

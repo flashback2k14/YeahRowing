@@ -4,55 +4,46 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>test serverless functions</title>
-    <style>
-      html,
-      body {
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-      }
-      header {
-        background: red;
-        height: 48px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding-left: 8px;
-        padding-right: 8px;
-      }
-      main {
-        background: yellow;
-        height: calc(100vh - 48px - 36px);
-      }
-      .holder {
-        background: lightblue;
-        height: inherit;
-        margin: 0 48px 0 48px;
-        overflow: auto;
-      }
-      footer {
-        background: green;
-        height: 36px;
-      }
-    </style>
+    <title>Yeah! Rowing</title>
+    <link rel="stylesheet" href="main.css" />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.0/chart.min.js"
+      integrity="sha512-asxKqQghC1oBShyhiBwA+YgotaSYKxGP1rcSYTDrB0U6DxwlJjU59B67U8+5/++uFjcuVM8Hh5cokLjZlhm3Vg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
   </head>
   <body>
+    <!-- HEADER -->
     <header>
       <div class="left">
-        <span>Yeah! Rowing</span>
+        <h2>Yeah! Rowing</h2>
       </div>
       <div class="middle"></div>
-      <div class="right">
-        <label for="username"> Username: <input type="text" id="username" /> </label>
-        <label for="password"> Password: <input type="password" id="password" /> </label>
-        <button id="login">Login</button>
-      </div>
+      <div class="right"></div>
     </header>
+    <!-- MAIN -->
     <main>
-      <div class="holder"></div>
+      <!-- LOGIN -->
+      <div class="login-holder visible">
+        <div class="login-container">
+          <label for="username"> Username<input type="text" id="username" /> </label>
+          <label for="password"> Password<input type="password" id="password" /> </label>
+          <button id="login">Login</button>
+        </div>
+      </div>
+      <!-- CHART -->
+      <div class="chart-holder hidden">
+        <div class="chart-container">
+          <canvas id="chart"></canvas>
+        </div>
+      </div>
     </main>
-    <footer></footer>
+    <!-- FOOTER -->
+    <footer>
+      <span id="errorText"></span>
+    </footer>
+    <!-- JS -->
     <script src="main.js"></script>
   </body>
 </html>

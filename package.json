@@ -5,7 +5,8 @@
   "author": "flashback2k14",
   "license": "MIT",
   "scripts": {
-    "start:d": "vercel dev",
+    "start:d:p": "NODE_ENV=production vercel dev",
+    "start:d:d": "NODE_ENV=development vercel dev",
     "start:d:b": "NODE_OPTIONS='--inspect' vercel dev"
   },
   "dependencies": {
