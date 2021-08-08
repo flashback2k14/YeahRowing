@@ -6,7 +6,7 @@
   const btnLogin = document.getElementById('login');
   const errorText = document.getElementById('errorText');
 
-  const _errorTextInterval = null;
+  let _errorTextInterval = null;
 
   const showError = (message) => {
     clearInterval(_errorTextInterval);
