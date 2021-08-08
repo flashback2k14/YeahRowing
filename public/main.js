@@ -137,6 +137,7 @@
       options: {
         legend: { display: true },
         maintainAspectRatio: false,
+        responsive: true,
         stacked: false,
         scales: {
           yLeft: {
