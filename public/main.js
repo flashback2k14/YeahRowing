@@ -187,6 +187,10 @@
 
   const init = () => {
     btnLogin.addEventListener('click', async () => load());
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/service-worker.js');
+    }
   };
 
   init();

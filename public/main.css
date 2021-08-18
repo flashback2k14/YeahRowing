@@ -80,7 +80,7 @@ main {
 .chart-container {
   position: relative;
   margin: auto;
-  height: 80vh;
+  height: inherit;
   width: 90vw;
   overflow: auto;
 }
