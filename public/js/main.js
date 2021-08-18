@@ -4,6 +4,7 @@
   const txtUsername = document.getElementById('username');
   const txtPassword = document.getElementById('password');
   const btnLogin = document.getElementById('login');
+  const snackbar = document.querySelector('.snackbar');
   const errorText = document.getElementById('errorText');
 
   let _errorTextInterval = null;
@@ -11,18 +12,20 @@
   const showError = (message) => {
     clearInterval(_errorTextInterval);
     errorText.textContent = message;
+    snackbar.classList.add('show');
     _errorTextInterval = setInterval(() => {
+      snackbar.classList.remove('show');
       errorText.textContent = '';
     }, 3500);
   };
 
   const getBase64 = () => {
     if (!txtUsername.value) {
-      throw new Error('username not set');
+      throw new Error('Username not entered.');
     }
 
     if (!txtPassword.value) {
-      throw new Error('password not set');
+      throw new Error('Password not entered.');
     }
 
     return window.btoa(`${txtUsername.value}:${txtPassword.value}`);
@@ -173,7 +176,7 @@
 
       const data = await response.json();
       if (!data) {
-        throw new Error('not data');
+        throw new Error('No data returned.');
       }
 
       changeVisibility();
@@ -181,7 +184,7 @@
       const transformedData = transform(data);
       initChart(transformedData);
     } catch (error) {
-      showError(`ERROR: ${error.message}`);
+      showError(error.message);
     }
   };
 
