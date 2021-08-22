@@ -9,7 +9,7 @@ body {
 }
 
 header {
-  background: #34515e;
+  background: #507c91;
   color: white;
   height: 60px;
   display: flex;
@@ -24,6 +24,16 @@ header {
 header h2 {
   margin: 0;
   padding: 0;
+}
+
+.logout-holder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: inherit;
+  width: 60px;
+  padding-top: 2px;
+  cursor: pointer;
 }
 
 main {
@@ -43,8 +53,8 @@ main {
 .login-container {
   display: flex;
   flex-direction: column;
-  padding: 48px;
-  border: #424242 1px solid;
+  padding: 36px 48px;
+  border: #a1a1a1 1px solid;
   border-radius: 4px;
 }
 
@@ -87,18 +97,34 @@ main {
 
 footer {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-end;
+  align-items: center;
+  justify-content: flex-start;
   background: #507c91;
-  height: 36px;
+  height: 48px;
 }
 
-footer span {
-  margin: 0 16px;
-  padding: 0;
-  height: 24px;
-  color: white;
+footer a {
+  margin-left: 6px;
+}
+
+.footer-anchor {
+  display: flex;
+  height: 34px;
+  text-decoration: none;
+  color: #fff;
+  outline: none;
+}
+.footer-anchor:hover,
+.footer-anchor:focus {
+  text-decoration: underline;
+  cursor: pointer;
+}
+.footer-anchor:visited {
+  color: #fff;
+}
+.footer-icon {
+  margin-left: 8px;
+  margin-right: 12px;
 }
 
 .hidden {

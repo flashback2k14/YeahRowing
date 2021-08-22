@@ -1,25 +1,22 @@
-(async () => {
+(async (COOKIEWRAPPER, UTILS) => {
   const loginHolder = document.querySelector('.login-holder');
   const chartHolder = document.querySelector('.chart-holder');
+  const logoutHolder = document.querySelector('.logout-holder');
   const txtUsername = document.getElementById('username');
   const txtPassword = document.getElementById('password');
   const btnLogin = document.getElementById('login');
   const snackbar = document.querySelector('.snackbar');
-  const errorText = document.getElementById('errorText');
+  const snackbarText = document.getElementById('snackbarText');
 
-  let _errorTextInterval = null;
+  const showError = UTILS.showMessage(snackbar, snackbarText, UTILS.CONSTANTS.MESSAGE_TYPE.ERROR);
+  const showInfo = UTILS.showMessage(snackbar, snackbarText, UTILS.CONSTANTS.MESSAGE_TYPE.INFO);
 
-  const showError = (message) => {
-    clearInterval(_errorTextInterval);
-    errorText.textContent = message;
-    snackbar.classList.add('show');
-    _errorTextInterval = setInterval(() => {
-      snackbar.classList.remove('show');
-      errorText.textContent = '';
-    }, 3500);
-  };
+  const getToken = () => {
+    if (COOKIEWRAPPER.checkCookie(COOKIEWRAPPER.CONSTANTS.TOKEN)) {
+      const token = COOKIEWRAPPER.getCookie(COOKIEWRAPPER.CONSTANTS.TOKEN);
+      return token;
+    }
 
-  const getBase64 = () => {
     if (!txtUsername.value) {
       throw new Error('Username not entered.');
     }
@@ -28,33 +25,9 @@
       throw new Error('Password not entered.');
     }
 
-    return window.btoa(`${txtUsername.value}:${txtPassword.value}`);
-  };
-
-  const changeVisibility = () => {
-    if (loginHolder.classList.contains('visible')) {
-      loginHolder.classList.remove('visible');
-      loginHolder.classList.add('hidden');
-    }
-
-    if (chartHolder.classList.contains('hidden')) {
-      chartHolder.classList.remove('hidden');
-      chartHolder.classList.add('visible');
-    }
-  };
-
-  const extractTime = (timeString) => {
-    const parts = timeString.split(':');
-    return Number.parseInt(parts[0], 10);
-  };
-
-  const extractRecovery = (recoveryString) => {
-    if (typeof recoveryString === 'number') {
-      return recoveryString;
-    }
-
-    const part = recoveryString.substring(1);
-    return Number.parseInt(part, 10);
+    const token = window.btoa(`${txtUsername.value}:${txtPassword.value}`);
+    COOKIEWRAPPER.setCookie(COOKIEWRAPPER.CONSTANTS.TOKEN, token, 1);
+    return token;
   };
 
   const transform = (data) => {
@@ -70,12 +43,12 @@
 
     data.forEach((entry) => {
       result.labels = [...result.labels, entry.date];
-      result.time = [...result.time, extractTime(entry.time)];
+      result.time = [...result.time, UTILS.extractTime(entry.time)];
       result.spm = [...result.spm, entry.spm];
       result.distance = [...result.distance, entry.distance];
       result.totalStrokes = [...result.totalStrokes, entry.totalStrokes];
       result.calories = [...result.calories, entry.calories];
-      result.recovery = [...result.recovery, extractRecovery(entry.recovery)];
+      result.recovery = [...result.recovery, UTILS.extractRecovery(entry.recovery)];
     });
 
     return result;
@@ -168,9 +141,11 @@
 
   const load = async () => {
     try {
+      showInfo('Loading...');
+
       const response = await fetch('/api/training/get-all', {
         headers: {
-          authorization: `Basic ${getBase64()}`,
+          authorization: `Basic ${getToken()}`,
         },
       });
 
@@ -179,7 +154,10 @@
         throw new Error('No data returned.');
       }
 
-      changeVisibility();
+      UTILS.navigateTo(UTILS.CONSTANTS.ROUTE.DASHBOARD);
+      UTILS.makeHidden(loginHolder);
+      UTILS.makeVisible(logoutHolder);
+      UTILS.makeVisible(chartHolder);
 
       const transformedData = transform(data);
       initChart(transformedData);
@@ -188,13 +166,39 @@
     }
   };
 
-  const init = () => {
+  const logout = () => {
+    showInfo('logging out...');
+    COOKIEWRAPPER.deleteCookie(COOKIEWRAPPER.CONSTANTS.TOKEN);
+    UTILS.navigateTo(UTILS.CONSTANTS.ROUTE.LOGIN);
+    UTILS.makeHidden(logoutHolder);
+    UTILS.makeHidden(chartHolder);
+    UTILS.makeVisible(loginHolder);
+  };
+
+  const initHandler = () => {
     btnLogin.addEventListener('click', async () => load());
+    logoutHolder.addEventListener('click', () => logout());
 
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/service-worker.js');
     }
   };
 
+  const initUi = () => {
+    if (COOKIEWRAPPER.checkCookie(COOKIEWRAPPER.CONSTANTS.TOKEN)) {
+      load();
+    } else {
+      UTILS.navigateTo(UTILS.CONSTANTS.ROUTE.LOGIN);
+      UTILS.makeHidden(logoutHolder);
+      UTILS.makeHidden(chartHolder);
+      UTILS.makeVisible(loginHolder);
+    }
+  };
+
+  const init = () => {
+    initHandler();
+    initUi();
+  };
+
   init();
-})();
+})(cookieWrapper, utils);
