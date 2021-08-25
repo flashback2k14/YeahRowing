@@ -1,4 +1,4 @@
-const { notion, checkAuth } = require('../../utils');
+const { notion, checkAuth, getDatabaseId } = require('../../utils');
 
 module.exports = async (req, res) => {
   if (req.method !== 'GET') {
@@ -10,10 +10,10 @@ module.exports = async (req, res) => {
   }
 
   const { results: pages } = await notion.databases.query({
-    database_id: process.env.NODE_ENV === 'production' ? process.env.NOTION_DB_ID : process.env.NOTION_DB_ID_TEST,
+    database_id: getDatabaseId(),
     sorts: [
       {
-        property: 'ID',
+        property: 'Date',
         direction: 'ascending',
       },
     ],

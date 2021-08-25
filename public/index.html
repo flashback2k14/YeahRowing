@@ -30,6 +30,14 @@
       </div>
       <div class="middle"></div>
       <div class="right">
+        <div class="add-holder hidden" title="Add new entry.">
+          <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
+            <path
+              fill="currentColor"
+              d="M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M13,7H11V11H7V13H11V17H13V13H17V11H13V7Z"
+            />
+          </svg>
+        </div>
         <div class="logout-holder hidden" title="Logout">
           <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
             <path
@@ -56,6 +64,29 @@
           <canvas id="chart"></canvas>
         </div>
       </div>
+      <!-- NEW ENTRY DIALOG -->
+      <dialog class="add-dialog" id="addDialog">
+        <div class="dialog-container_content">
+          <h3>Add new entry</h3>
+          <form id="addForm" method="dialog">
+            <label for="date"> Date<input type="date" id="date" name="date" required /> </label>
+            <label for="time">
+              Time<input type="time" id="time" name="time" step="1" min="00:00:00" max="00:59:00" required />
+            </label>
+            <label for="spm"> SPM<input type="number" id="spm" name="spm" required /> </label>
+            <label for="distance"> Distance<input type="number" id="distance" name="distance" required /> </label>
+            <label for="totalStrokes">
+              Total strokes<input type="number" id="totalStrokes" name="totalStrokes" required />
+            </label>
+            <label for="calories"> Calories<input type="number" id="calories" name="calories" required /> </label>
+            <label for="recovery"> Recovery<input type="text" id="recovery" name="recovery" required /> </label>
+            <div class="dialog-container_buttons">
+              <button class="close">Close</button>
+              <button type="submit" id="save">Save</button>
+            </div>
+          </form>
+        </div>
+      </dialog>
     </main>
     <!-- SNACKBAR -->
     <div class="snackbar">

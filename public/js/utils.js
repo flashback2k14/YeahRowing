@@ -81,6 +81,17 @@ const utils = (() => {
     return Number.parseInt(part, 10);
   };
 
+  const serializeForm = (form) => {
+    const obj = {};
+    const formData = new FormData(form);
+
+    for (let key of formData.keys()) {
+      obj[key] = formData.get(key);
+    }
+
+    return obj;
+  };
+
   return {
     CONSTANTS,
     showMessage,
@@ -89,5 +100,6 @@ const utils = (() => {
     navigateTo,
     extractTime,
     extractRecovery,
+    serializeForm,
   };
 })();

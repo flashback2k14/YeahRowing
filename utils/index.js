@@ -16,5 +16,27 @@ const checkAuth = (headers) => {
   return false;
 };
 
-module.exports.notion = notion;
-module.exports.checkAuth = checkAuth;
+const getDatabaseId = () => {
+  return process.env.NODE_ENV === 'production' ? process.env.NOTION_DB_ID : process.env.NOTION_DB_ID_TEST;
+};
+
+const getTime = (time) => {
+  const timeParts = time.split(':');
+
+  if (timeParts.length === 2) {
+    return `${timeParts[1]}:00`;
+  }
+
+  if (timeParts.length === 3) {
+    return `${timeParts[1]}:${timeParts[2]}`;
+  }
+
+  return '00:00';
+};
+
+module.exports = {
+  notion,
+  checkAuth,
+  getDatabaseId,
+  getTime,
+};

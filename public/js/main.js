@@ -1,15 +1,21 @@
 (async (COOKIEWRAPPER, UTILS) => {
   const loginHolder = document.querySelector('.login-holder');
   const chartHolder = document.querySelector('.chart-holder');
+  const addHolder = document.querySelector('.add-holder');
   const logoutHolder = document.querySelector('.logout-holder');
   const txtUsername = document.getElementById('username');
   const txtPassword = document.getElementById('password');
   const btnLogin = document.getElementById('login');
+  const btnSave = document.getElementById('save');
   const snackbar = document.querySelector('.snackbar');
   const snackbarText = document.getElementById('snackbarText');
+  const addDialog = document.getElementById('addDialog');
 
   const showError = UTILS.showMessage(snackbar, snackbarText, UTILS.CONSTANTS.MESSAGE_TYPE.ERROR);
   const showInfo = UTILS.showMessage(snackbar, snackbarText, UTILS.CONSTANTS.MESSAGE_TYPE.INFO);
+
+  let chart;
+  let nextId;
 
   const getToken = () => {
     if (COOKIEWRAPPER.checkCookie(COOKIEWRAPPER.CONSTANTS.TOKEN)) {
@@ -51,11 +57,13 @@
       result.recovery = [...result.recovery, UTILS.extractRecovery(entry.recovery)];
     });
 
+    nextId = data.length + 1;
+
     return result;
   };
 
   const initChart = (data) => {
-    const chart = new Chart(document.getElementById('chart'), {
+    chart = new Chart(document.getElementById('chart'), {
       type: 'line',
       data: {
         labels: data.labels,
@@ -154,8 +162,13 @@
         throw new Error('No data returned.');
       }
 
+      if (chart) {
+        chart.destroy();
+      }
+
       UTILS.navigateTo(UTILS.CONSTANTS.ROUTE.DASHBOARD);
       UTILS.makeHidden(loginHolder);
+      UTILS.makeVisible(addHolder);
       UTILS.makeVisible(logoutHolder);
       UTILS.makeVisible(chartHolder);
 
@@ -166,10 +179,42 @@
     }
   };
 
+  const save = async () => {
+    try {
+      const response = await fetch('/api/training/add', {
+        method: 'POST',
+        headers: {
+          authorization: `Basic ${getToken()}`,
+        },
+        body: JSON.stringify({
+          nextId,
+          ...UTILS.serializeForm(document.forms.addForm),
+        }),
+      });
+      if (response.ok) {
+        document.forms.addForm.reset();
+      }
+    } catch (error) {
+      showError(error.message);
+    }
+  };
+
+  const addNewEntry = async () => {
+    if (!document.forms.addForm.reportValidity()) {
+      return;
+    }
+
+    showInfo('Saving...');
+    await save();
+    addDialog.close();
+    load();
+  };
+
   const logout = () => {
     showInfo('logging out...');
     COOKIEWRAPPER.deleteCookie(COOKIEWRAPPER.CONSTANTS.TOKEN);
     UTILS.navigateTo(UTILS.CONSTANTS.ROUTE.LOGIN);
+    UTILS.makeHidden(addHolder);
     UTILS.makeHidden(logoutHolder);
     UTILS.makeHidden(chartHolder);
     UTILS.makeVisible(loginHolder);
@@ -177,7 +222,9 @@
 
   const initHandler = () => {
     btnLogin.addEventListener('click', async () => load());
+    addHolder.addEventListener('click', () => addDialog.showModal());
     logoutHolder.addEventListener('click', () => logout());
+    btnSave.addEventListener('click', async () => addNewEntry());
 
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/service-worker.js');
@@ -189,6 +236,7 @@
       load();
     } else {
       UTILS.navigateTo(UTILS.CONSTANTS.ROUTE.LOGIN);
+      UTILS.makeHidden(addHolder);
       UTILS.makeHidden(logoutHolder);
       UTILS.makeHidden(chartHolder);
       UTILS.makeVisible(loginHolder);

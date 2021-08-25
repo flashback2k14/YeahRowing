@@ -26,12 +26,17 @@ header h2 {
   padding: 0;
 }
 
+.right {
+  display: flex;
+}
+
+.add-holder,
 .logout-holder {
   display: flex;
   align-items: center;
   justify-content: center;
   height: inherit;
-  width: 60px;
+  width: 48px;
   padding-top: 2px;
   cursor: pointer;
 }
@@ -58,13 +63,43 @@ main {
   border-radius: 4px;
 }
 
-.login-container label {
+.add-dialog {
+  border: 1px solid #424242;
+  border-radius: 4px;
+  box-shadow: 0 1px 1px rgb(0 0 0 / 25%), 0 2px 2px rgb(0 0 0 / 20%), 0 4px 4px rgb(0 0 0 / 15%),
+    0 8px 8px rgb(0 0 0 / 10%), 0 16px 16px rgb(0 0 0 / 5%);
+}
+
+dialog::backdrop {
+  background: rgba(75, 75, 75, 0.2);
+  backdrop-filter: blur(1px);
+}
+
+.dialog-container_content {
+  display: flex;
+  flex-direction: column;
+  padding: 12px 24px;
+}
+
+.dialog-container_content h3 {
+  margin-top: 0;
+}
+
+.dialog-container_content form {
+  display: contents;
+}
+
+.dialog-container_buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+label {
   padding: 0 12px 12px 0;
   display: inline-block;
 }
 
-.login-container input[type='text'],
-.login-container input[type='password'] {
+input {
   width: calc(100% - 16px);
   padding: 12px;
   margin-top: 4px;
@@ -73,14 +108,19 @@ main {
   resize: vertical;
 }
 
-.login-container button {
-  background-color: #507c91;
+button {
+  background-color: #37474f;
   color: white;
   padding: 12px 20px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   float: right;
+}
+
+button.close {
+  background-color: #ff5983;
+  color: #000;
 }
 
 .chart-holder {
