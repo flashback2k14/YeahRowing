@@ -1,4 +1,4 @@
-const version = '1.4.1';
+const version = '1.5.0';
 const cacheName = `rowing-app-${version}`;
 
 self.addEventListener('install', (e) => {

@@ -63,86 +63,105 @@
   };
 
   const initChart = (data) => {
+    const datasets = [
+      {
+        data: data.recovery,
+        borderColor: '#ff5722',
+        backgroundColor: 'rgba(255, 138, 80, 0.2)',
+        fill: true,
+        label: 'recovery',
+        yAxisID: 'yLeftSmall',
+      },
+      {
+        data: data.spm,
+        borderColor: '#9c27b0',
+        backgroundColor: 'rgba(208, 92, 227, 0.2)',
+        fill: true,
+        label: 'SPM',
+        yAxisID: 'yLeftSmall',
+      },
+      {
+        data: data.time,
+        borderColor: '#f44336',
+        backgroundColor: 'rgba(255, 121, 97, 0.2)',
+        fill: true,
+        label: 'time',
+        yAxisID: 'yLeftSmall',
+      },
+      {
+        data: data.totalStrokes,
+        borderColor: '#009688',
+        backgroundColor: 'rgba(82, 199, 184, 0.2)',
+        fill: true,
+        label: 'total strokes',
+        yAxisID: 'yLeft',
+      },
+      {
+        data: data.calories,
+        borderColor: '#cddc39',
+        backgroundColor: 'rgba(255, 255, 110, 0.2)',
+        fill: true,
+        label: 'calories',
+        yAxisID: 'yLeft',
+      },
+      {
+        data: data.distance,
+        borderColor: '#2196f3',
+        backgroundColor: 'rgba(110, 198, 255, 0.2)',
+        fill: true,
+        label: 'distance',
+        yAxisID: 'yRight',
+      },
+    ];
+
+    const scales = {
+      yLeft: {
+        type: 'linear',
+        display: true,
+        position: 'left',
+      },
+      yLeftSmall: {
+        type: 'linear',
+        display: true,
+        position: 'left',
+      },
+      yRight: {
+        type: 'linear',
+        display: true,
+        position: 'right',
+        grid: {
+          drawOnChartArea: false,
+        },
+      },
+    };
+
+    const zoom = {
+      pan: {
+        enabled: true,
+      },
+      zoom: {
+        drag: {
+          enabled: true
+        },
+        mode: 'xy',
+      },
+    };
+
     chart = new Chart(document.getElementById('chart'), {
       type: 'line',
       data: {
         labels: data.labels,
-        datasets: [
-          {
-            data: data.recovery,
-            borderColor: '#ff5722',
-            backgroundColor: 'rgba(255, 138, 80, 0.2)',
-            fill: true,
-            label: 'recovery',
-            yAxisID: 'yLeftSmall',
-          },
-          {
-            data: data.spm,
-            borderColor: '#9c27b0',
-            backgroundColor: 'rgba(208, 92, 227, 0.2)',
-            fill: true,
-            label: 'SPM',
-            yAxisID: 'yLeftSmall',
-          },
-          {
-            data: data.time,
-            borderColor: '#f44336',
-            backgroundColor: 'rgba(255, 121, 97, 0.2)',
-            fill: true,
-            label: 'time',
-            yAxisID: 'yLeftSmall',
-          },
-          {
-            data: data.totalStrokes,
-            borderColor: '#009688',
-            backgroundColor: 'rgba(82, 199, 184, 0.2)',
-            fill: true,
-            label: 'total strokes',
-            yAxisID: 'yLeft',
-          },
-          {
-            data: data.calories,
-            borderColor: '#cddc39',
-            backgroundColor: 'rgba(255, 255, 110, 0.2)',
-            fill: true,
-            label: 'calories',
-            yAxisID: 'yLeft',
-          },
-          {
-            data: data.distance,
-            borderColor: '#2196f3',
-            backgroundColor: 'rgba(110, 198, 255, 0.2)',
-            fill: true,
-            label: 'distance',
-            yAxisID: 'yRight',
-          },
-        ],
+        datasets,
       },
       options: {
         legend: { display: true },
         maintainAspectRatio: false,
         responsive: true,
         stacked: false,
-        scales: {
-          yLeft: {
-            type: 'linear',
-            display: true,
-            position: 'left',
-          },
-          yLeftSmall: {
-            type: 'linear',
-            display: true,
-            position: 'left',
-          },
-          yRight: {
-            type: 'linear',
-            display: true,
-            position: 'right',
-            grid: {
-              drawOnChartArea: false,
-            },
-          },
-        },
+        scales,
+        // plugins: {
+        //   zoom
+        // }
       },
     });
   };
@@ -226,9 +245,9 @@
     logoutHolder.addEventListener('click', () => logout());
     btnSave.addEventListener('click', async () => addNewEntry());
 
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/service-worker.js');
-    }
+    // if ('serviceWorker' in navigator) {
+    //   navigator.serviceWorker.register('/service-worker.js');
+    // }
   };
 
   const initUi = () => {
